@@ -61,13 +61,64 @@ public class CampusNavigator {
         graph.get(v).add(new int[]{u, weight});
     }
 
-    public static void main(String[] args) {
-        buildGraph();
-        System.out.println("--------------------------------------");
-        System.out.println("GITAM Visakhapatnam Campus Navigator");
-        System.out.println("--------------------------------------");
-        System.out.println("Campus graph built with " + LOCATIONS + " locations.");
-        System.out.println("Ready to navigate!");
+    static int[] dijkstra(int source) {
+        //dist[i] = shortest distance from source to location i 
+        int[] dist = new int[LOCATIONS];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[source] = 0;
 
+        //Priority queue - stores [distance, node], sorted by distance
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.offer(new int[]{0,source});
+
+        while (!pq.isEmpty()){
+            int[] current = pq.poll();
+            int currDist = current[0];
+            int currNode = current[1];
+
+            //skip if we already found a shorter path
+            if (currDist > dist[currNode]) continue;
+
+            //check all neighbours
+            for (int[] neighbour : graph.get(currNode)) {
+                int nextNode = neighbour[0];
+                int edgeWeight = neighbour[1];
+                int newDist = dist[currNode] + edgeWeight;
+
+                //if shorter path found, update
+                if (newDist < dist[nextNode]){
+                    dist[nextNode] = newDist;
+                    pq.offer(new int[]{newDist, nextNode});
+                }
+
+            }
+        }
+        return dist;
     }
+
+    static void printShortestPath(int source, int destination) {
+        int[] dist = dijkstra(source);
+        
+        System.out.println("\nFrom: " + LOCATION_NAMES[source]);
+        System.out.println("To  : " + LOCATION_NAMES[destination]);
+        
+        if (dist[destination] == Integer.MAX_VALUE) {
+            System.out.println("No path found between these locations.");
+        }else{
+            System.out.println("Distance: " + dist[destination] + " meters");
+
+        }
+        }
+
+   public static void main(String[] args) {
+    buildGraph();
+    System.out.println("---------------------------------------");
+    System.out.println(" GITAM Visakhapatnam Campus Navigator");
+    System.out.println("---------------------------------------");
+
+    // Test some routes
+    printShortestPath(0, 13);  // Front Gate → GTE Lab
+    printShortestPath(1, 16);  // Back Gate → Indoor Stadium
+    printShortestPath(2, 18);  // ICT Bhavan → Dental College
+}
 }
