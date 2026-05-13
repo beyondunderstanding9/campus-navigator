@@ -221,45 +221,91 @@ public class CampusNavigator {
         System.out.println("===========================================");
     }
 
+    static int findLocation(String input, Scanner scanner) {
+    // If input is a number, use it directly
+    try {
+        int index = Integer.parseInt(input.trim());
+        if (index >= 0 && index < LOCATIONS) return index;
+        System.out.println("Number out of range.");
+        return -2;
+    } catch (NumberFormatException e) {
+        // Not a number — search by name
+    }
+
+    // Search for matching locations
+    List<Integer> matches = new ArrayList<>();
+    String lowerInput = input.trim().toLowerCase();
+
+    for (int i = 0; i < LOCATIONS; i++) {
+        if (LOCATION_NAMES[i].toLowerCase().contains(lowerInput)) {
+            matches.add(i);
+        }
+    }
+
+    if (matches.isEmpty()) {
+        System.out.println("No location found matching: " + input);
+        return -2;
+    }
+
+    if (matches.size() == 1) {
+        System.out.println("Found: " + LOCATION_NAMES[matches.get(0)]);
+        return matches.get(0);
+    }
+
+    // Multiple matches — ask user to pick
+    System.out.println("Multiple matches found:");
+    for (int i = 0; i < matches.size(); i++) {
+        System.out.println("  " + i + ". " + LOCATION_NAMES[matches.get(i)]);
+    }
+    System.out.print("Enter number to select: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+    if (choice >= 0 && choice < matches.size()) {
+        return matches.get(choice);
+    }
+    System.out.println("Invalid choice.");
+    return -2;
+}
+
     public static void main(String[] args) {
-        buildGraph();
-        Scanner scanner = new Scanner(System.in);
+    buildGraph();
+    Scanner scanner = new Scanner(System.in);
 
-        System.out.println("===========================================");
-        System.out.println("   GITAM Visakhapatnam Campus Navigator");
-        System.out.println("     Powered by Dijkstra's Algorithm");
-        System.out.println("===========================================");
+    System.out.println("===========================================");
+    System.out.println("   GITAM Visakhapatnam Campus Navigator");
+    System.out.println("     Powered by Dijkstra's Algorithm");
+    System.out.println("===========================================");
+    System.out.println("  Tip: Type a name (e.g. 'ICT') or number");
+    System.out.println("===========================================");
 
-        while (true) {
-            System.out.println("\nAvailable Locations:");
-            for (int i = 0; i < LOCATIONS; i++) {
-                System.out.printf("  %2d. %s%n", i, LOCATION_NAMES[i]);
-            }
-
-            System.out.print("\nEnter source number (or -1 to exit): ");
-            int source = scanner.nextInt();
-            if (source == -1) break;
-
-            System.out.print("Enter destination number: ");
-            int destination = scanner.nextInt();
-
-            if (source < 0 || source >= LOCATIONS ||
-                destination < 0 || destination >= LOCATIONS) {
-                System.out.println("Invalid input. Enter numbers between 0 and "
-                    + (LOCATIONS - 1));
-                continue;
-            }
-
-            if (source == destination) {
-                System.out.println("You are already at "
-                    + LOCATION_NAMES[source] + "!");
-                continue;
-            }
-
-            printShortestPath(source, destination);
+    while (true) {
+        System.out.println("\nAvailable Locations:");
+        for (int i = 0; i < LOCATIONS; i++) {
+            System.out.printf("  %2d. %s%n", i, LOCATION_NAMES[i]);
         }
 
-        System.out.println("\nThank you for using GITAM Campus Navigator. Safe walking!");
-        scanner.close();
+        System.out.print("\nEnter source (name or number, -1 to exit): ");
+        String sourceInput = scanner.nextLine().trim();
+
+        if (sourceInput.equals("-1")) break;
+
+        int source = findLocation(sourceInput, scanner);
+        if (source == -2) continue;
+
+        System.out.print("Enter destination (name or number): ");
+        String destInput = scanner.nextLine().trim();
+        int destination = findLocation(destInput, scanner);
+        if (destination == -2) continue;
+
+        if (source == destination) {
+            System.out.println("You are already at " + LOCATION_NAMES[source] + "!");
+            continue;
+        }
+
+        printShortestPath(source, destination);
     }
+
+    System.out.println("\nThank you for using GITAM Campus Navigator. Safe walking!");
+    scanner.close();
+}
 }
