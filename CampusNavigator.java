@@ -54,6 +54,13 @@ public class CampusNavigator {
         addEdge(15, 16, 150);   // Play Ground to Indoor Stadium
         addEdge(17, 18, 250);   // Medical Store to Dental College
         addEdge(20, 9, 600);    // NTR Park to School of Architecture
+        // Connecting back gate side to engineering blocks
+addEdge(1, 2, 900);    // Back Gate ↔ ICT Bhavan
+addEdge(9, 7, 400);    // School of Architecture ↔ Mechanical Bhavan
+addEdge(20, 19, 300);  // NTR Park ↔ Executive Residence
+addEdge(19, 9, 400);   // Executive Residence ↔ School of Architecture
+addEdge(12, 11, 500);  // School of Humanities ↔ GSB
+addEdge(0, 17, 1500);  // Front Gate ↔ Medical Store
     }
 
     static void addEdge(int u, int v, int weight){
@@ -61,10 +68,11 @@ public class CampusNavigator {
         graph.get(v).add(new int[]{u, weight});
     }
 
-    static int[] dijkstra(int source) {
+    static int[] dijkstra(int source, int[] prev) {
         //dist[i] = shortest distance from source to location i 
         int[] dist = new int[LOCATIONS];
         Arrays.fill(dist, Integer.MAX_VALUE);
+        Arrays.fill(prev, -1);
         dist[source] = 0;
 
         //Priority queue - stores [distance, node], sorted by distance
@@ -88,6 +96,7 @@ public class CampusNavigator {
                 //if shorter path found, update
                 if (newDist < dist[nextNode]){
                     dist[nextNode] = newDist;
+                    prev[nextNode] = currNode; //track where we came from
                     pq.offer(new int[]{newDist, nextNode});
                 }
 
@@ -97,28 +106,67 @@ public class CampusNavigator {
     }
 
     static void printShortestPath(int source, int destination) {
-        int[] dist = dijkstra(source);
+        int[] prev = new int[LOCATIONS];
+        int[] dist = dijkstra(source, prev);
         
+        System.out.println("\n--------------------------------------");
         System.out.println("\nFrom: " + LOCATION_NAMES[source]);
         System.out.println("To  : " + LOCATION_NAMES[destination]);
         
         if (dist[destination] == Integer.MAX_VALUE) {
             System.out.println("No path found between these locations.");
-        }else{
-            System.out.println("Distance: " + dist[destination] + " meters");
-
-        }
+            return;
         }
 
-   public static void main(String[] args) {
+        // Reconstruct path by walking backwards through prev[]
+        List<Integer> path = new ArrayList<>();
+        for (int at = destination; at != -1; at = prev[at]){
+            path.add(at);
+        }
+        Collections.reverse(path);
+
+        System.out.println("Route : ");
+        for (int i = 0; i < path.size(); i++){
+            if(i == 0){
+                System.out.println(" [START] " + LOCATION_NAMES[path.get(i)]);
+            } else {
+                System.out.println(" → " + LOCATION_NAMES[path.get(i)]);
+            }
+        }
+        System.out.println("Total Distance: " + dist[destination] + "meters");
+        }
+        
+
+ public static void main(String[] args) {
     buildGraph();
+    Scanner scanner = new Scanner(System.in);  // ONE scanner, declared once
+
     System.out.println("---------------------------------------");
-    System.out.println(" GITAM Visakhapatnam Campus Navigator");
+    System.out.println("  GITAM Visakhapatnam Campus Navigator");
     System.out.println("---------------------------------------");
 
-    // Test some routes
-    printShortestPath(0, 13);  // Front Gate → GTE Lab
-    printShortestPath(1, 16);  // Back Gate → Indoor Stadium
-    printShortestPath(2, 18);  // ICT Bhavan → Dental College
+    while (true) {
+        System.out.println("\nAvailable Locations:");
+        for (int i = 0; i < LOCATIONS; i++) {
+            System.out.printf("  %2d. %s%n", i, LOCATION_NAMES[i]);
+        }
+
+        System.out.print("\nEnter source number (or -1 to exit): ");
+        int source = scanner.nextInt();  // reuse same scanner
+        if (source == -1) break;
+
+        System.out.print("Enter destination number: ");
+        int destination = scanner.nextInt();  // reuse same scanner
+
+        if (source < 0 || source >= LOCATIONS || destination < 0 || destination >= LOCATIONS) {
+            System.out.println("Invalid input. Please enter numbers from the list.");
+            continue;
+        }
+
+        printShortestPath(source, destination);
+    }
+
+    System.out.println("\nThank you for using the GITAM Campus Navigator!");
+    scanner.close();
 }
 }
