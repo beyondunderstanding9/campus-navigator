@@ -1,28 +1,47 @@
 import java.util.*;
+
 public class CampusNavigator {
-    static final int LOCATIONS = 21;
+
+    static final int LOCATIONS = 37;
+
     static final String[] LOCATION_NAMES = {
-        "Front Gate", //0
-        "Back Gate",  //1
-        "ICT Bhavan", //2
-        "EEE Block", //3
-        "CV Raman Bhavan", //4
-        "Nirman Bhavan", //5
-        "Pharmacy Bhavan", //6
-        "Mechanical Bhavan", //7
-        "Civil Bhavan", //8
-        "School of Architecture", //9
-        "School of Law", //10
-        "GSB", //11
-        "School of Humanities", //12
-        "GTE Lab", //13
-        "Workshop", //14
-        "Play Ground", //15
-        "Indoor Stadium", //16
-        "Medical Store", //17
-        "Dental College", //18
-        "Executive Residence", //19
-        "NTR Park" //20
+        "Front Gate",              // 0
+        "Back Gate",               // 1
+        "ICT Bhavan",              // 2
+        "EEE Block",               // 3
+        "CV Raman Bhavan",         // 4
+        "Nirman Bhavan",           // 5
+        "Pharmacy Bhavan",         // 6
+        "Mechanical Bhavan",       // 7
+        "Civil Bhavan",            // 8
+        "School of Architecture",  // 9
+        "School of Law",           // 10
+        "GSB",                     // 11
+        "VDC",                     // 12
+        "Coke Station",            // 13
+        "Play Ground",             // 14
+        "Indoor Stadium",          // 15
+        "Medical Store",           // 16
+        "Dental College",          // 17
+        "Executive Residence",     // 18
+        "NTR Park",                // 19
+        "Girls Hostel",            // 20
+        "DDS Boys Hostel",         // 21
+        "KRC",                     // 22
+        "Gandhi Park",             // 23
+        "Talent Cafe",             // 24
+        "Central Parking",         // 25
+        "Crocodile Park",          // 26
+        "Open Audi",               // 27
+        "Sai Vennela Canteen",     // 28
+        "GGA Gym",                 // 29
+        "Vinay Sadan Hostel",      // 30
+        "NRI Hostel",              // 31
+        "Sadarma Saddan Hostel",   // 32
+        "Ganesh Temple",           // 33
+        "Baba Bazar",              // 34
+        "RBS Hostel",              // 35
+        "Mother Teresa Park"       // 36
     };
 
     static List<List<int[]>> graph;
@@ -32,74 +51,132 @@ public class CampusNavigator {
         for (int i = 0; i < LOCATIONS; i++) {
             graph.add(new ArrayList<>());
         }
-        addEdge(0, 4, 1800);    // Front Gate to CV Raman Bhavan
-        addEdge(0, 18, 1200);   // Front Gate to Dental College
-        addEdge(1, 12, 350);    // Back Gate to School of Humanities
-        addEdge(1, 9, 450);     // Back Gate to School of Architecture
-        addEdge(1, 20, 500);    // Back Gate to NTR Park
-        addEdge(2, 3, 150);     // ICT Bhavan to EEE Block
-        addEdge(2, 4, 200);     // ICT Bhavan to CV Raman Bhavan
-        addEdge(2, 5, 300);     // ICT Bhavan to Nirman Bhavan
-        addEdge(3, 13, 100);    // EEE Block to GTE Lab
-        addEdge(4, 17, 250);    // CV Raman Bhavan to Medical Store
-        addEdge(5, 6, 150);     // Nirman Bhavan to Pharmacy Bhavan
-        addEdge(7, 8, 100);     // Mechanical Bhavan to Civil Bhavan
-        addEdge(7, 9, 400);     // Mechanical Bhavan to School of Architecture
-        addEdge(8, 13, 120);    // Civil Bhavan to GTE Lab
-        addEdge(10, 11, 400);   // School of Law to GSB
-        addEdge(10, 12, 300);   // School of Law to School of Humanities
-        addEdge(10, 14, 200);   // School of Law to Workshop
-        addEdge(11, 16, 300);   // GSB to Indoor Stadium
-        addEdge(13, 14, 150);   // GTE Lab to Workshop
-        addEdge(15, 16, 150);   // Play Ground to Indoor Stadium
-        addEdge(17, 18, 250);   // Medical Store to Dental College
-        addEdge(20, 9, 600);    // NTR Park to School of Architecture
-        // Connecting back gate side to engineering blocks
-addEdge(1, 2, 900);    // Back Gate ↔ ICT Bhavan
-addEdge(9, 7, 400);    // School of Architecture ↔ Mechanical Bhavan
-addEdge(20, 19, 300);  // NTR Park ↔ Executive Residence
-addEdge(19, 9, 400);   // Executive Residence ↔ School of Architecture
-addEdge(12, 11, 500);  // School of Humanities ↔ GSB
-addEdge(0, 17, 1500);  // Front Gate ↔ Medical Store
+
+        // === FRONT GATE ===
+        addEdge(0, 33, 30);     // Front Gate → Ganesh Temple
+        addEdge(0, 17, 190);    // Front Gate → Dental College
+        addEdge(0, 4, 560);     // Front Gate → CV Raman (via Coke Station junction road)
+        addEdge(0, 31, 177);    // Front Gate → NRI Hostel
+        addEdge(0, 25, 190);    // Front Gate → Central Parking
+        addEdge(0, 16, 250);    // Front Gate → Medical Store (Sadguru Sai Baba temple side)
+
+        // === GANESH TEMPLE ===
+        addEdge(33, 14, 360);   // Ganesh Temple → Play Ground
+
+        // === BACK GATE ===
+        addEdge(1, 20, 170);    // Back Gate → Girls Hostel
+        addEdge(1, 21, 345);    // Back Gate → DDS Boys Hostel
+        addEdge(1, 18, 345);    // Back Gate → Executive Residence
+        addEdge(1, 19, 100);    // Back Gate → NTR Park
+        addEdge(1, 22, 330);    // Back Gate → KRC Junction
+
+        // === TOP HOSTELS ===
+        addEdge(20, 18, 150);   // Girls Hostel → Executive Residence
+        addEdge(18, 9, 175);    // Executive Residence → School of Architecture
+
+        // === NTR PARK ===
+        addEdge(19, 9, 170);    // NTR Park → VB/Architecture junction
+        addEdge(19, 22, 330);   // NTR Park → KRC Junction
+
+        // === ARCHITECTURE / LEFT COLUMN ===
+        addEdge(9, 2, 205);     // Architecture → ICT Junction
+        addEdge(9, 8, 100);     // Architecture → Civil Bhavan
+        addEdge(8, 7, 100);     // Civil Bhavan → Mechanical Bhavan
+        addEdge(7, 6, 100);     // Mechanical Bhavan → Pharmacy Bhavan
+        addEdge(6, 4, 340);     // Pharmacy Bhavan → CV Raman
+
+        // === ICT CLUSTER ===
+        addEdge(2, 34, 50);     // ICT → Baba Bazar
+        addEdge(2, 5, 50);      // ICT → Nirman Bhavan
+        addEdge(2, 3, 170);     // ICT → EEE Block
+        addEdge(2, 22, 170);    // ICT → KRC
+
+        // === KRC JUNCTION ===
+        addEdge(22, 26, 30);    // KRC → Crocodile Park
+        addEdge(22, 27, 50);    // KRC → Open Audi
+        addEdge(22, 11, 50);    // KRC → GSB
+        addEdge(22, 25, 100);   // KRC → Central Parking
+
+        // === CROCODILE PARK ===
+        addEdge(26, 11, 30);    // Crocodile Park → GSB
+
+        // === GSB / VDC / ACADEMIC RIGHT ===
+        addEdge(11, 12, 50);    // GSB → VDC
+        addEdge(12, 15, 150);   // VDC → Indoor Stadium
+        addEdge(12, 27, 50);    // VDC → Open Audi (same cluster)
+
+        // === OPEN AUDI ===
+        addEdge(27, 10, 50);    // Open Audi → School of Law
+        addEdge(27, 28, 50);    // Open Audi → Sai Vennela Canteen
+        addEdge(27, 13, 70);    // Open Audi → Coke Station
+        addEdge(27, 30, 105);   // Open Audi → Vinay Sadan (Tennis Court area)
+
+        // === CENTRAL PARKING ===
+        addEdge(25, 13, 60);    // Central Parking → Coke Station
+        addEdge(25, 23, 115);   // Central Parking → Gandhi Park
+
+        // === GANDHI PARK / TALENT CAFE ===
+        addEdge(23, 24, 50);    // Gandhi Park → Talent Cafe
+        addEdge(24, 17, 210);   // Talent Cafe → Dental College
+        addEdge(23, 4, 300);    // Gandhi Park → CV Raman
+
+        // === COKE STATION ===
+        addEdge(13, 10, 165);   // Coke Station → School of Law
+        addEdge(13, 28, 80);    // Coke Station → Sai Vennela Canteen
+        addEdge(13, 14, 170);   // Coke Station → Play Ground
+
+        // === SAI VENNELA / GYM / STADIUM ===
+        addEdge(28, 29, 100);   // Sai Vennela → GGA Gym
+        addEdge(28, 25, 70);    // Sai Vennela → Central Parking (direct)
+        addEdge(29, 15, 100);   // GGA Gym → Indoor Stadium
+
+        // === RIGHT SIDE HOSTELS ===
+        addEdge(30, 35, 40);    // Vinay Sadan → RBS Hostel
+        addEdge(30, 32, 100);   // Vinay Sadan → Sadarma Saddan
+        addEdge(32, 31, 100);   // Sadarma Saddan → NRI Hostel
+        addEdge(32, 15, 120);   // Sadarma Saddan → Indoor Stadium
+        addEdge(15, 14, 50);    // Indoor Stadium → Play Ground
+        addEdge(14, 32, 200);   // Play Ground → Sadarma Saddan
+
+        // === DENTAL / BOTTOM ===
+        addEdge(4, 17, 185);    // CV Raman → Dental College
+        addEdge(17, 16, 105);   // Dental College → Medical Store
+        addEdge(4, 36, 150);    // CV Raman → Mother Teresa Park
+        addEdge(36, 17, 100);   // Mother Teresa Park → Dental College
+        addEdge(36, 13, 200);   // Mother Teresa Park → Coke Station
     }
 
-    static void addEdge(int u, int v, int weight){
+    static void addEdge(int u, int v, int weight) {
         graph.get(u).add(new int[]{v, weight});
         graph.get(v).add(new int[]{u, weight});
     }
 
     static int[] dijkstra(int source, int[] prev) {
-        //dist[i] = shortest distance from source to location i 
         int[] dist = new int[LOCATIONS];
         Arrays.fill(dist, Integer.MAX_VALUE);
         Arrays.fill(prev, -1);
         dist[source] = 0;
 
-        //Priority queue - stores [distance, node], sorted by distance
         PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
-        pq.offer(new int[]{0,source});
+        pq.offer(new int[]{0, source});
 
-        while (!pq.isEmpty()){
+        while (!pq.isEmpty()) {
             int[] current = pq.poll();
             int currDist = current[0];
             int currNode = current[1];
 
-            //skip if we already found a shorter path
             if (currDist > dist[currNode]) continue;
 
-            //check all neighbours
             for (int[] neighbour : graph.get(currNode)) {
                 int nextNode = neighbour[0];
                 int edgeWeight = neighbour[1];
                 int newDist = dist[currNode] + edgeWeight;
 
-                //if shorter path found, update
-                if (newDist < dist[nextNode]){
+                if (newDist < dist[nextNode]) {
                     dist[nextNode] = newDist;
-                    prev[nextNode] = currNode; //track where we came from
+                    prev[nextNode] = currNode;
                     pq.offer(new int[]{newDist, nextNode});
                 }
-
             }
         }
         return dist;
@@ -108,65 +185,81 @@ addEdge(0, 17, 1500);  // Front Gate ↔ Medical Store
     static void printShortestPath(int source, int destination) {
         int[] prev = new int[LOCATIONS];
         int[] dist = dijkstra(source, prev);
-        
-        System.out.println("\n--------------------------------------");
-        System.out.println("\nFrom: " + LOCATION_NAMES[source]);
-        System.out.println("To  : " + LOCATION_NAMES[destination]);
-        
+
+        System.out.println("\n===========================================");
+        System.out.println("From : " + LOCATION_NAMES[source]);
+        System.out.println("To   : " + LOCATION_NAMES[destination]);
+        System.out.println("===========================================");
+
         if (dist[destination] == Integer.MAX_VALUE) {
             System.out.println("No path found between these locations.");
             return;
         }
 
-        // Reconstruct path by walking backwards through prev[]
         List<Integer> path = new ArrayList<>();
-        for (int at = destination; at != -1; at = prev[at]){
+        for (int at = destination; at != -1; at = prev[at]) {
             path.add(at);
         }
         Collections.reverse(path);
 
-        System.out.println("Route : ");
-        for (int i = 0; i < path.size(); i++){
-            if(i == 0){
-                System.out.println(" [START] " + LOCATION_NAMES[path.get(i)]);
+        System.out.println("Route:");
+        for (int i = 0; i < path.size(); i++) {
+            if (i == 0) {
+                System.out.println("  [START] " + LOCATION_NAMES[path.get(i)]);
             } else {
-                System.out.println(" → " + LOCATION_NAMES[path.get(i)]);
+                System.out.println("  --> " + LOCATION_NAMES[path.get(i)]);
             }
         }
-        System.out.println("Total Distance: " + dist[destination] + "meters");
-        }
-        
 
- public static void main(String[] args) {
-    buildGraph();
-    Scanner scanner = new Scanner(System.in);  // ONE scanner, declared once
+        // Walking speed: 80 metres/min on flat, adjusted for hilly campus
+        int minutes = dist[destination] / 80;
+        int seconds = (dist[destination] % 80) * 60 / 80;
 
-    System.out.println("---------------------------------------");
-    System.out.println("  GITAM Visakhapatnam Campus Navigator");
-    System.out.println("---------------------------------------");
-
-    while (true) {
-        System.out.println("\nAvailable Locations:");
-        for (int i = 0; i < LOCATIONS; i++) {
-            System.out.printf("  %2d. %s%n", i, LOCATION_NAMES[i]);
-        }
-
-        System.out.print("\nEnter source number (or -1 to exit): ");
-        int source = scanner.nextInt();  // reuse same scanner
-        if (source == -1) break;
-
-        System.out.print("Enter destination number: ");
-        int destination = scanner.nextInt();  // reuse same scanner
-
-        if (source < 0 || source >= LOCATIONS || destination < 0 || destination >= LOCATIONS) {
-            System.out.println("Invalid input. Please enter numbers from the list.");
-            continue;
-        }
-
-        printShortestPath(source, destination);
+        System.out.println("-------------------------------------------");
+        System.out.println("Total Distance : " + dist[destination] + " metres");
+        System.out.println("Walking Time   : ~" + minutes + " min " + seconds + " sec");
+        System.out.println("===========================================");
     }
 
-    System.out.println("\nThank you for using the GITAM Campus Navigator!");
-    scanner.close();
-}
+    public static void main(String[] args) {
+        buildGraph();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("===========================================");
+        System.out.println("   GITAM Visakhapatnam Campus Navigator");
+        System.out.println("     Powered by Dijkstra's Algorithm");
+        System.out.println("===========================================");
+
+        while (true) {
+            System.out.println("\nAvailable Locations:");
+            for (int i = 0; i < LOCATIONS; i++) {
+                System.out.printf("  %2d. %s%n", i, LOCATION_NAMES[i]);
+            }
+
+            System.out.print("\nEnter source number (or -1 to exit): ");
+            int source = scanner.nextInt();
+            if (source == -1) break;
+
+            System.out.print("Enter destination number: ");
+            int destination = scanner.nextInt();
+
+            if (source < 0 || source >= LOCATIONS ||
+                destination < 0 || destination >= LOCATIONS) {
+                System.out.println("Invalid input. Enter numbers between 0 and "
+                    + (LOCATIONS - 1));
+                continue;
+            }
+
+            if (source == destination) {
+                System.out.println("You are already at "
+                    + LOCATION_NAMES[source] + "!");
+                continue;
+            }
+
+            printShortestPath(source, destination);
+        }
+
+        System.out.println("\nThank you for using GITAM Campus Navigator. Safe walking!");
+        scanner.close();
+    }
 }
