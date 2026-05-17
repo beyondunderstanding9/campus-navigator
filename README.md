@@ -12,24 +12,58 @@ walking distances measured on-ground.
 - Displays the full route step by step
 - Estimates walking time based on average walking speed (80 m/min)
 - Covers 42 campus locations and 76 edges with real blueprint distances
+- Provides both **CLI** (command-line) and **Web UI** interfaces for easy navigation
+- Interactive web interface with search, path visualization, and responsive design
 
 ## Tech Stack
 
-- Language: Java
-- Data Structures: Adjacency List (Graph), Priority Queue, Arrays
-- Algorithm: Dijkstra's Shortest Path Algorithm
-- Tools: VS Code, Git, GitHub
+- **Backend Language:** Java
+- **Frontend:** HTML, CSS, JavaScript
+- **Data Structures:** Adjacency List (Graph), Priority Queue, Arrays
+- **Algorithm:** Dijkstra's Shortest Path Algorithm
+- **Tools:** VS Code, Git, GitHub
+- **Styling:** CSS3 with custom design system (dark theme, responsive)
+
+## Features
+
+✨ **Dual Interface**
+- Command-line interface for quick terminal access
+- Interactive web UI with modern dark theme design
+- Real-time location search with autocomplete
+
+🗺️ **Campus Mapping**
+- 42 campus locations accurately mapped
+- 76 walking paths with real distances
+- Data sourced from hand-drawn blueprint measurements
+
+⚡ **Smart Pathfinding**
+- Dijkstra's algorithm for guaranteed shortest paths
+- Walking time estimation (80 m/min average speed)
+- Step-by-step route directions
+
+📱 **Responsive Design**
+- Clean, intuitive user interface
+- Works on desktop browsers
+- Dark theme for easy visibility
 
 ## How to Run
 
 **Prerequisites:** Java JDK 17 or above
 
+### CLI Version (Command Line)
 ```bash
 git clone https://github.com/beyondunderstanding9/campus-navigator.git
 cd campus-navigator
 javac CampusNavigator.java
 java CampusNavigator
 ```
+
+### Web Version (Interactive GUI)
+1. Clone or download the repository
+2. Open `index_4.html` in your web browser
+3. Use the interactive search and dropdown to select source and destination
+4. Click "Find Path" to calculate the shortest route
+5. View the complete route, distance, and estimated walking time
 
 ## Sample Output
 ===========================================
@@ -86,6 +120,22 @@ so the full route can be reconstructed and printed step by step.
 
 **Time Complexity:** O(E log V)  
 **Space Complexity:** O(V + E)
+
+## Project Structure
+
+```
+campus-navigator/
+├── CampusNavigator.java      # Main backend program (CLI version)
+├── index_4.html              # Web UI interface (interactive GUI)
+├── README.md                 # Project documentation
+└── CampusNavigator.class     # Compiled Java bytecode
+```
+
+## File Descriptions
+
+- **CampusNavigator.java** - Core application with Dijkstra's algorithm implementation, campus graph model, and command-line interface
+- **index_4.html** - Complete web interface with embedded HTML, CSS, and JavaScript for interactive pathfinding
+- **README.md** - This documentation file
 
 ## Author
 
