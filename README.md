@@ -11,7 +11,7 @@ walking distances measured on-ground.
 - Finds the shortest walking path between any two campus locations
 - Displays the full route step by step
 - Estimates walking time based on average walking speed (80 m/min)
-- Covers 37 campus locations and 50+ edges with real blueprint distances
+- Covers 42 campus locations and 76 edges with real blueprint distances
 
 ## Tech Stack
 
@@ -44,7 +44,7 @@ Route:
 --> Front Gate
 Total Distance : 620 metres
 Walking Time   : ~7 min 45 sec
-## Campus Locations (37 Nodes)
+## Campus Locations (42 Nodes)
 
 | No. | Location | No. | Location |
 |-----|----------|-----|----------|
@@ -66,13 +66,17 @@ Walking Time   : ~7 min 45 sec
 | 15 | Indoor Stadium | 34 | Baba Bazar |
 | 16 | Medical Store | 35 | RBS Hostel |
 | 17 | Dental College | 36 | Mother Teresa Park |
-| 18 | Executive Residence | | |
+| 18 | Executive Residence | 37 | VB |
+| | | 38 | Sadguru Sai Baba Temple |
+| | | 39 | GITAM Bhavan |
+| | | 40 | Tennis Court |
+| | | 41 | IE Bhavan |
 
 ## How Dijkstra Works Here
 
 The campus is modelled as an **undirected weighted graph**:
-- **Nodes** = campus locations (37 total)
-- **Edges** = walking paths between locations (50+)
+- **Nodes** = campus locations (42 total)
+- **Edges** = walking paths between locations (76)
 - **Weights** = real distances in metres from hand-drawn blueprint
 
 Dijkstra's Algorithm uses a **Priority Queue** to always explore 

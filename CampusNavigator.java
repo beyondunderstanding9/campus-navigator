@@ -2,7 +2,7 @@ import java.util.*;
 
 public class CampusNavigator {
 
-    static final int LOCATIONS = 37;
+    static final int LOCATIONS = 42;
 
     static final String[] LOCATION_NAMES = {
         "Front Gate",              // 0
@@ -41,7 +41,12 @@ public class CampusNavigator {
         "Ganesh Temple",           // 33
         "Baba Bazar",              // 34
         "RBS Hostel",              // 35
-        "Mother Teresa Park"       // 36
+        "Mother Teresa Park",      // 36
+        "VB",                      // 37
+        "Sadguru Sai Baba Temple", // 38
+        "GITAM Bhavan",            // 39
+        "Tennis Court",            // 40
+        "IE Bhavan"                // 41
     };
 
     static List<List<int[]>> graph;
@@ -52,98 +57,117 @@ public class CampusNavigator {
             graph.add(new ArrayList<>());
         }
 
-        // === FRONT GATE ===
-        addEdge(0, 33, 30);     // Front Gate → Ganesh Temple
-        addEdge(0, 17, 190);    // Front Gate → Dental College
-        addEdge(0, 4, 560);     // Front Gate → CV Raman (via Coke Station junction road)
-        addEdge(0, 31, 177);    // Front Gate → NRI Hostel
-        addEdge(0, 25, 190);    // Front Gate → Central Parking
-        addEdge(0, 16, 250);    // Front Gate → Medical Store (Sadguru Sai Baba temple side)
+        // Front Gate connections
+        addEdge(0, 33, 30);    // Front Gate -> Ganesh Temple
+        addEdge(0, 17, 190);    // Front Gate -> Dental College
+        addEdge(0, 31, 177);    // Front Gate -> NRI Hostel
+        addEdge(0, 25, 190);    // Front Gate -> Central Parking
+        addEdge(0, 16, 250);    // Front Gate -> Medical Store
+        addEdge(0, 38, 105);    // Front Gate -> Sadguru Sai Baba Temple
 
-        // === GANESH TEMPLE ===
-        addEdge(33, 14, 360);   // Ganesh Temple → Play Ground
+        // Ganesh Temple
+        addEdge(33, 14, 360);    // Ganesh Temple -> Play Ground
 
-        // === BACK GATE ===
-        addEdge(1, 20, 170);    // Back Gate → Girls Hostel
-        addEdge(1, 21, 345);    // Back Gate → DDS Boys Hostel
-        addEdge(1, 18, 345);    // Back Gate → Executive Residence
-        addEdge(1, 19, 100);    // Back Gate → NTR Park
-        addEdge(1, 22, 330);    // Back Gate → KRC Junction
+        // Back Gate connections
+        addEdge(1, 20, 155);    // Back Gate -> Girls Hostel (155m from blueprint)
+        addEdge(1, 21, 345);    // Back Gate -> DDS Boys Hostel
+        addEdge(1, 18, 345);    // Back Gate -> Executive Residence
+        addEdge(1, 19, 155);    // Back Gate -> NTR Park (direct, short route)
+        addEdge(1, 22, 330);    // Back Gate -> KRC Junction
 
-        // === TOP HOSTELS ===
-        addEdge(20, 18, 150);   // Girls Hostel → Executive Residence
-        addEdge(18, 9, 175);    // Executive Residence → School of Architecture
+        // Top hostels
+        addEdge(20, 18, 150);    // Girls Hostel -> Executive Residence
+        addEdge(21, 20, 200);    // DDS Boys Hostel -> Girls Hostel
+        addEdge(18, 9, 175);    // Executive Residence -> School of Architecture
 
-        // === NTR PARK ===
-        addEdge(19, 9, 170);    // NTR Park → VB/Architecture junction
-        addEdge(19, 22, 330);   // NTR Park → KRC Junction
+        // NTR Park — key hub
+        addEdge(19, 37, 120);    // NTR Park -> VB (Visvesvaraya Bhavan) — SHORT ROUTE
+        addEdge(19, 22, 330);    // NTR Park -> KRC
 
-        // === ARCHITECTURE / LEFT COLUMN ===
-        addEdge(9, 2, 205);     // Architecture → ICT Junction
-        addEdge(9, 8, 100);     // Architecture → Civil Bhavan
-        addEdge(8, 7, 100);     // Civil Bhavan → Mechanical Bhavan
-        addEdge(7, 6, 100);     // Mechanical Bhavan → Pharmacy Bhavan
-        addEdge(6, 4, 340);     // Pharmacy Bhavan → CV Raman
+        // VB connections — the fix: Back Gate -> NTR -> VB -> ICT
+        addEdge(37, 2, 130);    // VB -> ICT Bhavan
+        addEdge(37, 9, 80);    // VB -> School of Architecture
+        addEdge(37, 8, 90);    // VB -> Civil Bhavan
+        addEdge(37, 34, 100);    // VB -> Baba Bazar
 
-        // === ICT CLUSTER ===
-        addEdge(2, 34, 50);     // ICT → Baba Bazar
-        addEdge(2, 5, 50);      // ICT → Nirman Bhavan
-        addEdge(2, 3, 170);     // ICT → EEE Block
-        addEdge(2, 22, 170);    // ICT → KRC
+        // Architecture / left column
+        addEdge(9, 2, 205);    // Architecture -> ICT
+        addEdge(9, 8, 100);    // Architecture -> Civil Bhavan
+        addEdge(8, 7, 100);    // Civil -> Mechanical
+        addEdge(7, 6, 100);    // Mechanical -> Pharmacy
+        addEdge(7, 41, 60);    // Mechanical -> IE Bhavan
+        addEdge(6, 4, 340);    // Pharmacy -> CV Raman
+        addEdge(6, 41, 80);    // Pharmacy -> IE Bhavan
+        addEdge(41, 5, 90);    // IE Bhavan -> Nirman Bhavan
 
-        // === KRC JUNCTION ===
-        addEdge(22, 26, 30);    // KRC → Crocodile Park
-        addEdge(22, 27, 50);    // KRC → Open Audi
-        addEdge(22, 11, 50);    // KRC → GSB
-        addEdge(22, 25, 100);   // KRC → Central Parking
+        // ICT cluster
+        addEdge(2, 34, 50);    // ICT -> Baba Bazar
+        addEdge(2, 5, 50);    // ICT -> Nirman Bhavan
+        addEdge(2, 3, 170);    // ICT -> EEE Block
+        addEdge(3, 23, 150);    // EEE Block -> Gandhi Park
+        addEdge(2, 22, 170);    // ICT -> KRC
 
-        // === CROCODILE PARK ===
-        addEdge(26, 11, 30);    // Crocodile Park → GSB
+        // KRC junction
+        addEdge(22, 26, 30);    // KRC -> Crocodile Park
+        addEdge(22, 27, 50);    // KRC -> Open Audi
+        addEdge(22, 11, 50);    // KRC -> GSB
+        addEdge(22, 25, 100);    // KRC -> Central Parking
 
-        // === GSB / VDC / ACADEMIC RIGHT ===
-        addEdge(11, 12, 50);    // GSB → VDC
-        addEdge(12, 15, 150);   // VDC → Indoor Stadium
-        addEdge(12, 27, 50);    // VDC → Open Audi (same cluster)
+        // Crocodile Park
+        addEdge(26, 11, 30);    // Crocodile Park -> GSB
 
-        // === OPEN AUDI ===
-        addEdge(27, 10, 50);    // Open Audi → School of Law
-        addEdge(27, 28, 50);    // Open Audi → Sai Vennela Canteen
-        addEdge(27, 13, 70);    // Open Audi → Coke Station
-        addEdge(27, 30, 105);   // Open Audi → Vinay Sadan (Tennis Court area)
+        // GSB / VDC cluster
+        addEdge(11, 12, 50);    // GSB -> VDC
+        addEdge(12, 15, 150);    // VDC -> Indoor Stadium
+        addEdge(12, 27, 50);    // VDC -> Open Audi
 
-        // === CENTRAL PARKING ===
-        addEdge(25, 13, 60);    // Central Parking → Coke Station
-        addEdge(25, 23, 115);   // Central Parking → Gandhi Park
+        // Open Audi cluster
+        addEdge(27, 10, 50);    // Open Audi -> School of Law
+        addEdge(27, 28, 50);    // Open Audi -> Sai Vennela Canteen
+        addEdge(27, 13, 70);    // Open Audi -> Coke Station
+        addEdge(27, 30, 105);    // Open Audi -> Vinay Sadan Hostel
 
-        // === GANDHI PARK / TALENT CAFE ===
-        addEdge(23, 24, 50);    // Gandhi Park → Talent Cafe
-        addEdge(24, 17, 210);   // Talent Cafe → Dental College
-        addEdge(23, 4, 300);    // Gandhi Park → CV Raman
+        // Central Parking
+        addEdge(25, 13, 60);    // Central Parking -> Coke Station
+        addEdge(25, 23, 115);    // Central Parking -> Gandhi Park
+        addEdge(25, 36, 150);    // Central Parking -> Mother Teresa Park (direct path)
 
-        // === COKE STATION ===
-        addEdge(13, 10, 165);   // Coke Station → School of Law
-        addEdge(13, 28, 80);    // Coke Station → Sai Vennela Canteen
-        addEdge(13, 14, 170);   // Coke Station → Play Ground
+        // Gandhi Park / Talent Cafe
+        addEdge(23, 24, 50);    // Gandhi Park -> Talent Cafe
+        addEdge(24, 17, 210);    // Talent Cafe -> Dental College
+        addEdge(23, 4, 300);    // Gandhi Park -> CV Raman
 
-        // === SAI VENNELA / GYM / STADIUM ===
-        addEdge(28, 29, 100);   // Sai Vennela → GGA Gym
-        addEdge(28, 25, 70);    // Sai Vennela → Central Parking (direct)
-        addEdge(29, 15, 100);   // GGA Gym → Indoor Stadium
+        // Coke Station
+        addEdge(13, 10, 165);    // Coke Station -> School of Law
+        addEdge(13, 28, 80);    // Coke Station -> Sai Vennela Canteen
+        addEdge(13, 14, 170);    // Coke Station -> Play Ground
 
-        // === RIGHT SIDE HOSTELS ===
-        addEdge(30, 35, 40);    // Vinay Sadan → RBS Hostel
-        addEdge(30, 32, 100);   // Vinay Sadan → Sadarma Saddan
-        addEdge(32, 31, 100);   // Sadarma Saddan → NRI Hostel
-        addEdge(32, 15, 120);   // Sadarma Saddan → Indoor Stadium
-        addEdge(15, 14, 50);    // Indoor Stadium → Play Ground
-        addEdge(14, 32, 200);   // Play Ground → Sadarma Saddan
+        // Sai Vennela / Gym / Stadium
+        addEdge(28, 29, 100);    // Sai Vennela -> GGA Gym
+        addEdge(28, 25, 70);    // Sai Vennela -> Central Parking
+        addEdge(29, 15, 100);    // GGA Gym -> Indoor Stadium
 
-        // === DENTAL / BOTTOM ===
-        addEdge(4, 17, 185);    // CV Raman → Dental College
-        addEdge(17, 16, 105);   // Dental College → Medical Store
-        addEdge(4, 36, 150);    // CV Raman → Mother Teresa Park
-        addEdge(36, 17, 100);   // Mother Teresa Park → Dental College
-        addEdge(36, 13, 200);   // Mother Teresa Park → Coke Station
+        // Right side hostels
+        addEdge(30, 35, 40);    // Vinay Sadan -> RBS Hostel
+        addEdge(30, 32, 100);    // Vinay Sadan -> Sadarma Saddan
+        addEdge(32, 31, 100);    // Sadarma Saddan -> NRI Hostel
+        addEdge(32, 15, 120);    // Sadarma Saddan -> Indoor Stadium
+        addEdge(15, 14, 50);    // Indoor Stadium -> Play Ground
+        addEdge(15, 40, 80);    // Indoor Stadium -> Tennis Court
+        addEdge(40, 35, 60);    // Tennis Court -> RBS Hostel
+        addEdge(40, 32, 100);    // Tennis Court -> Sadarma Saddan
+        addEdge(14, 32, 200);    // Play Ground -> Sadarma Saddan
+
+        // CV Raman / Dental bottom
+        addEdge(4, 17, 185);    // CV Raman -> Dental College
+        addEdge(17, 16, 105);    // Dental College -> Medical Store
+        addEdge(16, 38, 90);    // Medical Store -> Sadguru Sai Baba Temple
+        addEdge(38, 4, 120);    // Sadguru Sai Baba Temple -> CV Raman
+        addEdge(4, 36, 150);    // CV Raman -> Mother Teresa Park
+        addEdge(36, 17, 100);    // Mother Teresa Park -> Dental College
+        addEdge(36, 13, 200);    // Mother Teresa Park -> Coke Station
+        addEdge(36, 39, 80);    // Mother Teresa Park -> GITAM Bhavan
+        addEdge(39, 33, 120);    // GITAM Bhavan -> Ganesh Temple
     }
 
     static void addEdge(int u, int v, int weight) {
